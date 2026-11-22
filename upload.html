@@ -4,9 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>QuickPrint - Customer Upload</title>
-  <script src="https://tailwindcss.com"></script>
-  <script src="https://cloudflare.com"></script>
-  <script src="https://jsdelivr.net"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="bg-slate-100 min-h-screen flex items-center justify-center p-4">
 
@@ -102,9 +102,9 @@
   </div>
 
   <script type="module">
-    import { initializeApp } from "https://gstatic.com";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://gstatic.com";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://gstatic.com";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAE5POEDBJhbAdwHriuYiut9g9Z8L_JKGA",
@@ -120,7 +120,7 @@
     const db = getFirestore(app);
     const storage = getStorage(app);
 
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cloudflare.com';
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
     let detectedPages = 0;
     let selectedFile = null;

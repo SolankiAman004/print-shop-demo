@@ -6,70 +6,154 @@
     <meta name="theme-color" content="#0f172a" />
     <title>QuickPrint | Live Counter Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css"
-    />
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <style>
-      body {
-        font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+      #jobsTable_wrapper .dataTables_length label,
+      #jobsTable_wrapper .dataTables_filter label {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+        color: #64748b;
+        font-size: 0.75rem;
+        font-weight: 700;
       }
-      .dataTables_wrapper .dataTables_filter input,
-      .dataTables_wrapper .dataTables_length select {
-        border: 1px solid #dbe1ea;
+
+      #jobsTable_wrapper .dataTables_length select,
+      #jobsTable_wrapper .dataTables_filter input {
+        height: 42px;
+        border: 1px solid #e2e8f0;
         border-radius: 10px;
-        padding: 7px 10px;
+        background-color: #fff;
+        color: #334155;
         outline: none;
+        transition: border-color 150ms ease, box-shadow 150ms ease;
       }
-      .dataTables_wrapper .dataTables_filter input:focus {
+
+      #jobsTable_wrapper .dataTables_length select {
+        min-width: 78px;
+        padding: 0 2rem 0 0.75rem;
+        cursor: pointer;
+        appearance: auto;
+        font-weight: 700;
+      }
+
+      #jobsTable_wrapper .dataTables_filter input {
+        width: min(260px, 65vw);
+        padding: 0 0.75rem;
+      }
+
+      #jobsTable_wrapper .dataTables_length select:focus,
+      #jobsTable_wrapper .dataTables_filter input:focus {
         border-color: #818cf8;
-        box-shadow: 0 0 0 3px rgb(99 102 241 / 12%);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
       }
-      table.dataTable thead th {
-        border-bottom: 1px solid #e2e8f0 !important;
+
+      #jobsTable_wrapper .dataTables_info {
+        color: #94a3b8;
+        font-size: 0.75rem;
+        font-weight: 600;
       }
-      table.dataTable.no-footer {
-        border-bottom: 0 !important;
+
+      #jobsTable_wrapper .dataTables_paginate {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
       }
-      table.dataTable tbody td {
+
+      #jobsTable_wrapper .dataTables_paginate .paginate_button {
+        min-width: 36px;
+        height: 36px;
+        display: inline-grid;
+        place-items: center;
+        margin: 0 !important;
+        border: 1px solid transparent !important;
+        border-radius: 9px !important;
+        color: #64748b !important;
+        font-size: 0.75rem;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      #jobsTable_wrapper .dataTables_paginate .paginate_button:hover {
+        border-color: #e2e8f0 !important;
+        background: #f8fafc !important;
+        color: #334155 !important;
+        box-shadow: none;
+      }
+
+      #jobsTable_wrapper .dataTables_paginate .paginate_button.current,
+      #jobsTable_wrapper .dataTables_paginate .paginate_button.current:hover {
+        border-color: #4f46e5 !important;
+        background: #4f46e5 !important;
+        color: #fff !important;
+      }
+
+      #jobsTable_wrapper .dataTables_paginate .paginate_button.disabled,
+      #jobsTable_wrapper .dataTables_paginate .paginate_button.disabled:hover {
+        border-color: transparent !important;
+        background: transparent !important;
+        color: #cbd5e1 !important;
+        cursor: default;
+      }
+
+      #jobsTable {
+        border-collapse: separate;
+        border-spacing: 0;
+      }
+
+      #jobsTable thead th {
+        border-bottom: 1px solid #e2e8f0;
+        background: #f8fafc;
+        white-space: nowrap;
+      }
+
+      #jobsTable tbody td {
         border-bottom: 1px solid #f1f5f9;
+        padding: 1rem 0.75rem;
         vertical-align: middle;
       }
-      .dataTables_wrapper .dataTables_info,
-      .dataTables_wrapper .dataTables_length,
-      .dataTables_wrapper .dataTables_filter,
-      .dataTables_wrapper .dataTables_paginate {
-        color: #64748b !important;
-        font-size: 12px;
-        margin-top: 12px;
+
+      #jobsTable tbody tr {
+        transition: background-color 150ms ease;
       }
-      .dataTables_wrapper .dataTables_paginate .paginate_button {
-        border-radius: 8px !important;
+
+      #jobsTable tbody tr:hover {
+        background: #fafaff;
       }
-      @media (max-width: 700px) {
-        .dataTables_wrapper .dataTables_filter {
-          float: none;
-          text-align: left;
-          margin: 12px 0;
+
+      #jobsTable tbody tr:last-child td {
+        border-bottom: 0;
+      }
+
+      @media (max-width: 640px) {
+        #jobsTable_wrapper .dataTables_filter,
+        #jobsTable_wrapper .dataTables_filter label,
+        #jobsTable_wrapper .dataTables_filter input {
+          width: 100%;
         }
-        .dataTables_wrapper .dataTables_filter input {
-          width: min(65vw, 260px);
+
+        #jobsTable_wrapper .dataTables_filter input {
+          min-width: 0;
+        }
+
+        #jobsTable_wrapper .dataTables_paginate {
+          justify-content: center;
         }
       }
     </style>
-  </head>
+    </head>
   <body class="min-h-screen bg-slate-100 text-slate-800">
-    <header class="bg-slate-950 text-white shadow-lg">
+    <header class="border-b border-slate-800 bg-[#111827] text-white">
       <div
         class="mx-auto flex max-w-[1500px] flex-col gap-4 px-4 py-5 sm:px-6 lg:flex-row lg:items-center lg:justify-between"
       >
         <div class="flex items-center gap-3">
           <div
-            class="grid h-11 w-11 place-items-center rounded-2xl bg-indigo-500 text-xl"
+            class="grid h-[42px] w-[42px] shrink-0 place-items-center rounded-[13px] bg-indigo-600 text-[17px] text-white"
           >
-            🖨️
+            <i class="fa-solid fa-print" aria-hidden="true"></i>
           </div>
           <div>
             <p
@@ -77,7 +161,7 @@
             >
               QuickPrint · Shop management
             </p>
-            <h1 class="text-lg font-extrabold sm:text-xl">
+            <h1 class="text-lg font-bold tracking-tight sm:text-xl">
               Sharma Xerox & Print Hub
             </h1>
             <p class="text-xs text-slate-400">Live counter dashboard</p>
@@ -95,7 +179,7 @@
         </div>
       </div>
     </header>
-    <main class="mx-auto max-w-[1500px] space-y-6 px-4 py-6 sm:px-6 lg:py-8">
+    <main class="mx-auto max-w-[1600px] space-y-6 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
       <section
         class="flex flex-col justify-between gap-2 sm:flex-row sm:items-end"
       >
@@ -106,25 +190,25 @@
             Overview
           </p>
           <h2 class="mt-1 text-2xl font-black tracking-tight text-slate-950">
-            Today at a glance
+            Shop overview
           </h2>
           <p class="mt-1 text-sm text-slate-500">
-            Monitor incoming print jobs and manage counter activity.
+            A clear view of your print orders and daily counter activity.
           </p>
         </div>
         <p id="todayLabel" class="text-xs font-medium text-slate-500"></p>
       </section>
-      <section class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <section class="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <article
-          class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
+          class="rounded-[18px] border border-slate-200 bg-white p-5 shadow-sm"
         >
           <div class="flex items-center justify-between">
             <p class="text-xs font-bold uppercase tracking-wide text-slate-500">
               Pending jobs
             </p>
             <span
-              class="grid h-9 w-9 place-items-center rounded-xl bg-amber-50 text-lg"
-              >⏳</span
+              class="grid h-9 w-9 place-items-center rounded-[11px] bg-slate-100 text-sm text-slate-500"
+              ><i class="fa-regular fa-clock" aria-hidden="true"></i></span
             >
           </div>
           <p id="kpiPending" class="mt-3 text-3xl font-black text-amber-600">
@@ -133,15 +217,15 @@
           <p class="mt-1 text-xs text-slate-400">Waiting to be printed</p>
         </article>
         <article
-          class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
+          class="rounded-[18px] border border-slate-200 bg-white p-5 shadow-sm"
         >
           <div class="flex items-center justify-between">
             <p class="text-xs font-bold uppercase tracking-wide text-slate-500">
               Printed today
             </p>
             <span
-              class="grid h-9 w-9 place-items-center rounded-xl bg-emerald-50 text-lg"
-              >✓</span
+              class="grid h-9 w-9 place-items-center rounded-[11px] bg-slate-100 text-sm text-slate-500"
+              ><i class="fa-solid fa-check" aria-hidden="true"></i></span
             >
           </div>
           <p id="kpiPrinted" class="mt-3 text-3xl font-black text-emerald-600">
@@ -150,15 +234,15 @@
           <p class="mt-1 text-xs text-slate-400">Jobs marked printed today</p>
         </article>
         <article
-          class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
+          class="rounded-[18px] border border-slate-200 bg-white p-5 shadow-sm"
         >
           <div class="flex items-center justify-between">
             <p class="text-xs font-bold uppercase tracking-wide text-slate-500">
               Printed value today
             </p>
             <span
-              class="grid h-9 w-9 place-items-center rounded-xl bg-indigo-50 text-lg"
-              >₹</span
+              class="grid h-9 w-9 place-items-center rounded-[11px] bg-slate-100 text-sm text-slate-500"
+              ><i class="fa-solid fa-indian-rupee-sign" aria-hidden="true"></i></span
             >
           </div>
           <p id="kpiCash" class="mt-3 text-3xl font-black text-indigo-600">
@@ -169,24 +253,16 @@
           </p>
         </article>
         <article
-          class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
+          class="rounded-[18px] border border-slate-200 bg-white p-5 shadow-sm"
         >
           <div class="flex items-center justify-between">
             <p class="text-xs font-bold uppercase tracking-wide text-slate-500">
-              File privacy
+              Total orders
             </p>
-            <span
-              class="grid h-9 w-9 place-items-center rounded-xl bg-sky-50 text-lg"
-              >🔒</span
-            >
+            <span class="grid h-9 w-9 place-items-center rounded-[11px] bg-slate-100 text-sm text-slate-500"><i class="fa-solid fa-layer-group" aria-hidden="true"></i></span>
           </div>
-          <p class="mt-3 text-lg font-extrabold text-slate-800">
-            60-minute target
-          </p>
-          <p class="mt-1 text-xs leading-5 text-slate-400">
-            Automatic deletion requires a scheduled backend task; this dashboard
-            does not currently run it.
-          </p>
+          <p id="kpiTotal" class="mt-3 text-3xl font-black text-slate-900">—</p>
+          <p class="mt-1 text-xs text-slate-400">All orders received</p>
         </article>
       </section>
       <section
@@ -196,9 +272,9 @@
           class="flex flex-col gap-3 border-b border-slate-100 px-4 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6"
         >
           <div>
-            <h3 class="text-base font-extrabold text-slate-950">Print queue</h3>
+            <h3 class="text-base font-extrabold text-slate-950">Recent print orders</h3>
             <p class="mt-1 text-xs text-slate-500">
-              New customer submissions appear here automatically.
+              New customer orders appear here automatically. Select an action to open, complete or remove an order.
             </p>
           </div>
           <span
@@ -212,19 +288,19 @@
             id="errorBanner"
             class="mb-4 hidden rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700"
           ></div>
-          <div class="overflow-x-auto">
+          <div class="w-full overflow-x-auto rounded-xl">
             <table id="jobsTable" class="w-full text-left text-sm">
               <thead>
                 <tr
                   class="text-[10px] font-extrabold uppercase tracking-wider text-slate-500"
                 >
-                  <th class="px-3 py-3">Token</th>
-                  <th class="px-3 py-3">Time</th>
+                  <th class="px-3 py-3">Order</th>
                   <th class="px-3 py-3">Customer</th>
                   <th class="px-3 py-3">Document</th>
-                  <th class="px-3 py-3">Print settings</th>
+                  <th class="px-3 py-3">Print setup</th>
+                  <th class="px-3 py-3">Finishing &amp; pickup</th>
                   <th class="px-3 py-3">Instructions</th>
-                  <th class="px-3 py-3">Bill</th>
+                  <th class="px-3 py-3">Amount</th>
                   <th class="px-3 py-3">Status</th>
                   <th class="px-3 py-3">Actions</th>
                 </tr>
@@ -234,7 +310,7 @@
           </div>
         </div>
       </section>
-      <p class="pb-3 text-center text-[11px] text-slate-400">
+      <p class="pb-3 text-center text-[14px] text-slate-400">
         QuickPrint · Counter operations dashboard
       </p>
     </main>
@@ -284,10 +360,24 @@
       const table = $("#jobsTable").DataTable({
         ordering: false,
         pageLength: 10,
+        lengthMenu: [10, 25, 50, 100],
         scrollX: true,
         autoWidth: false,
+        dom:
+          '<"flex flex-col gap-3 mb-4 sm:flex-row sm:items-center sm:justify-between"lf>' +
+          "rt" +
+          '<"flex flex-col gap-3 mt-4 sm:flex-row sm:items-center sm:justify-between"ip>',
         language: {
-          search: "Search orders:",
+          search: "",
+          searchPlaceholder: "Search orders...",
+          lengthMenu: "Show _MENU_ rows",
+          info: "Showing _START_ to _END_ of _TOTAL_ orders",
+          infoEmpty: "Showing 0 orders",
+          infoFiltered: "(filtered from _MAX_ total orders)",
+          paginate: {
+            previous: '<i class="fa-solid fa-chevron-left"></i>',
+            next: '<i class="fa-solid fa-chevron-right"></i>',
+          },
           emptyTable:
             "No print orders yet. New customer uploads will appear here.",
           zeroRecords: "No matching print orders found.",
@@ -363,54 +453,6 @@
         });
       }
 
-      // PRINT / OPEN DOCUMENT
-      window.printJob = async (id) => {
-        const job = jobsById.get(id);
-
-        if (!job || !job.file_path) {
-          alert("The document path is missing.");
-          return;
-        }
-
-        // Open a blank tab immediately to avoid popup blocking
-        const newTab = window.open("about:blank", "_blank");
-
-        if (!newTab) {
-          alert("Pop-up blocked. Allow pop-ups and try again.");
-          return;
-        }
-
-        try {
-          // Generate a temporary link for the private file
-          const { data, error } = await sb.storage
-            .from("prints")
-            .createSignedUrl(job.file_path, 60 * 60);
-
-          if (error) throw error;
-
-          if (!data?.signedUrl) {
-            throw new Error("Could not generate document link.");
-          }
-
-          newTab.location.href = data.signedUrl;
-
-          // Update job status
-          const { error: updateError } = await sb
-            .from("print_jobs")
-            .update({
-              status: "PRINTED",
-              printed_at: new Date().toISOString(),
-            })
-            .eq("id", id);
-
-          if (updateError) throw updateError;
-        } catch (e) {
-          console.error(e);
-          newTab.close();
-          alert("Could not open or update this order: " + e.message);
-        }
-      };
-
       // DELETE ORDER
 
       window.deleteJob = async (id) => {
@@ -460,76 +502,103 @@
         }
       };
 
-      // Build dashboard table row
+      // Build a compact order row. All customer-supplied text is escaped before display.
       function row(id, j) {
-        const color =
-          j.color_mode === "COLOR"
-            ? '<span class="rounded-md bg-orange-50 px-2 py-1 text-[10px] font-extrabold text-orange-700">COLOR</span>'
-            : '<span class="rounded-md bg-slate-100 px-2 py-1 text-[10px] font-extrabold text-slate-700">B&W</span>';
+        const color = j.color_mode === "COLOR"
+          ? '<span class="rounded-md bg-orange-50 px-2 py-1 text-[10px] font-extrabold text-orange-700">COLOUR</span>'
+          : '<span class="rounded-md bg-slate-100 px-2 py-1 text-[10px] font-extrabold text-slate-700">B&amp;W</span>';
+        const side = j.print_side === "DOUBLE"
+          ? '<span class="rounded-md bg-blue-50 px-2 py-1 text-[10px] font-bold text-blue-700">Double-sided</span>'
+          : '<span class="rounded-md bg-slate-100 px-2 py-1 text-[10px] font-bold text-slate-600">Single-sided</span>';
+        const status = j.status === "PRINTED"
+          ? '<span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1.5 text-[10px] font-extrabold text-emerald-700"><span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>Printed</span>'
+          : '<span class="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-2.5 py-1.5 text-[10px] font-extrabold text-amber-700"><span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>Pending</span>';
 
-        const side =
-          j.print_side === "DOUBLE"
-            ? '<span class="rounded-md bg-blue-50 px-2 py-1 text-[10px] font-bold text-blue-700">DOUBLE</span>'
-            : '<span class="rounded-md bg-slate-100 px-2 py-1 text-[10px] font-bold text-slate-600">SINGLE</span>';
-
-        const status =
-          j.status === "PRINTED"
-            ? '<span class="rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-extrabold text-emerald-700">✓ Printed</span>'
-            : '<span class="rounded-full bg-amber-50 px-2.5 py-1 text-[10px] font-extrabold text-amber-700">● Pending</span>';
-
+        const pickup = j.pickup_time
+          ? new Date(j.pickup_time).toLocaleString([], { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })
+          : "Not specified";
+        const urgency = j.urgency === "URGENT"
+          ? '<span class="rounded-md bg-rose-50 px-2 py-1 text-[10px] font-bold text-rose-700">Urgent</span>'
+          : '<span class="rounded-md bg-slate-100 px-2 py-1 text-[10px] font-bold text-slate-600">Normal</span>';
         const note = j.notes
-          ? `<span class="inline-block max-w-40 whitespace-normal rounded-lg bg-amber-50 px-2.5 py-1.5 text-xs text-amber-800">${esc(j.notes)}</span>`
-          : '<span class="text-xs text-slate-300">No notes</span>';
+          ? `<p class="max-w-44 whitespace-normal text-xs leading-5 text-slate-600">${esc(j.notes)}</p>`
+          : '<span class="text-xs text-slate-300">No instructions</span>';
+        const finishingNames = {
+          NONE: "No finishing",
+          STAPLING: "Stapling",
+          SPIRAL: "Spiral binding",
+          LAMINATION: "Lamination"
+        };
+        const qualityNames = { NORMAL: "Normal paper", PREMIUM: "Premium paper" };
+        const orientationNames = { PORTRAIT: "Portrait", LANDSCAPE: "Landscape" };
+        const created = j.created_at ? new Date(j.created_at).toLocaleString([], {
+          day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit"
+        }) : "—";
+
+        const openButton = `<button type="button" data-action="open" data-id="${esc(id)}" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-indigo-600 px-3 py-2 text-[11px] font-bold text-white text-lg p-4 transition hover:bg-indigo-700 active:scale-[.98]"><i class="fa-regular fa-folder-open" aria-hidden="true" title="Open file"></i></button>`;
+        const markButton = j.status === "PRINTED"
+          ? `<button type="button" data-action="mark" data-id="${esc(id)}" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-lg bg-slate-600 px-3 py-2 text-[11px] font-bold text-white transition hover:bg-slate-400 active:scale-[.98]" title="Undo">
+            <i class="fa-regular fa-undo" aria-hidden="true"></i>
+          </button>`
+          : `<button type="button" data-action="mark" data-id="${esc(id)}" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-emerald-600 px-3 py-2 text-[11px] font-bold text-white text-lg p-4 transition hover:bg-emerald-700 active:scale-[.98]" title="Mark printed"><i class="fa-solid fa-check" aria-hidden="true"></i></button>`;
+        const deleteButton = `<button type="button" data-action="delete" data-id="${esc(id)}" aria-label="Delete order" title="Delete order" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-red-600 px-3 py-2 text-[11px] font-bold text-lg p-4 text-white transition hover:bg-red-400 active:scale-[.98]"><i class="fa-regular fa-trash-can" aria-hidden="true" title="Delete order"></i></button>`;
 
         return [
-          `<span class="font-black text-indigo-700">${esc(j.token || "—")}</span>`,
-
-          `<span class="whitespace-nowrap text-xs text-slate-500">${esc(getJobTime(j))}</span>`,
-
-          `<span class="font-bold text-slate-800">${esc(j.customer_name || "—")}</span>`,
-
-          `<div class="min-w-36">
-        <p class="max-w-48 truncate font-semibold" title="${esc(j.file_name || "")}">
-          ${esc(j.file_name || "Untitled file")}
-        </p>
-        <p class="mt-1 text-[11px] text-slate-500">
-          ${Number(j.pages) || 0} page(s) · Range: ${esc(j.page_range || "All")}
-        </p>
-      </div>`,
-
-          `<div class="flex min-w-32 flex-wrap items-center gap-1.5">
-        ${color}${side}
-        <span class="text-xs font-extrabold text-slate-600">
-          ×${Number(j.copies) || 1}
-        </span>
-      </div>`,
-
-          note,
-
-          `<span class="font-black text-slate-900">
-        ₹${(Number(j.total) || 0).toLocaleString("en-IN")}
-      </span>`,
-
+          `<div class="min-w-28"><p class="font-extrabold text-indigo-700">${esc(j.token || "Order")}</p><p class="mt-1 text-[14px] text-slate-400">${esc(created)}</p></div>`,
+          `<div class="min-w-36"><p class="font-bold text-slate-800">${esc(j.customer_name || "—")}</p><p class="mt-1 text-xs text-slate-500">${esc(j.customer_phone || "No mobile number")}</p></div>`,
+          `<div class="min-w-40"><p class="max-w-48 truncate font-semibold text-slate-800" title="${esc(j.file_name || "")}">${esc(j.file_name || "Untitled file")}</p><p class="mt-1 text-[14px] text-slate-500">${Number(j.pages) || 0} page(s) · ${esc(j.page_range || "All pages")} · ${Number(j.copies) || 1} copy/copies</p></div>`,
+          `<div class="min-w-36 space-y-1.5">${color}${side}<p class="text-[14px] text-slate-600">${esc(j.paper_size || "A4")} · ${esc(orientationNames[j.orientation] || j.orientation || "Portrait")}</p><p class="text-[14px] text-slate-500">${esc(qualityNames[j.paper_quality] || j.paper_quality || "Normal paper")}</p></div>`,
+          `<div class="min-w-36 space-y-1.5"><p class="text-xs font-semibold text-slate-700">${esc(finishingNames[j.finishing] || j.finishing || "No finishing")}</p>${urgency}<p class="text-[14px] text-slate-500">Pickup: ${esc(pickup)}</p></div>`,
+          `<div class="min-w-40">${note}</div>`,
+          `<span class="whitespace-nowrap font-extrabold text-slate-900">₹${(Number(j.total) || 0).toLocaleString("en-IN")}</span>`,
           status,
-
-          `<div class="flex min-w-36 items-center gap-1.5">
-        <button type="button"
-          data-action="print"
-          data-id="${esc(id)}"
-          class="whitespace-nowrap rounded-lg bg-emerald-600 px-3 py-2 text-[11px] font-bold text-white hover:bg-emerald-700">
-          ${j.status === "PRINTED" ? "↻ Reprint" : "🖨 Print"}
-        </button>
-
-        <button type="button"
-          data-action="delete"
-          data-id="${esc(id)}"
-          aria-label="Delete order"
-          class="rounded-lg bg-rose-50 px-3 py-2 text-xs font-bold text-rose-600 hover:bg-rose-100">
-          🗑
-        </button>
-      </div>`,
+          `<div class="flex min-w-48 flex-wrap items-center gap-1.5">${openButton}${markButton}${deleteButton}</div>`
         ];
       }
+
+      // Open a document without changing its print status.
+      window.openDocument = async (id) => {
+        const job = jobsById.get(id);
+        if (!job || !job.file_path) {
+          alert("The document path is missing.");
+          return;
+        }
+        const newTab = window.open("about:blank", "_blank");
+        if (!newTab) {
+          alert("Pop-up blocked. Allow pop-ups and try again.");
+          return;
+        }
+        try {
+          const { data, error } = await sb.storage
+            .from("prints")
+            .createSignedUrl(job.file_path, 60 * 60);
+          if (error) throw error;
+          if (!data?.signedUrl) throw new Error("Could not generate document link.");
+          newTab.location.href = data.signedUrl;
+        } catch (e) {
+          console.error(e);
+          newTab.close();
+          alert("Could not open this document: " + e.message);
+        }
+      };
+
+      // Mark an order printed only after the shop has actually printed it.
+      window.markPrinted = async (id) => {
+        const job = jobsById.get(id);
+        if (!job) return;
+        const nextStatus = job.status === "PRINTED" ? "PENDING" : "PRINTED";
+        const updates = nextStatus === "PRINTED"
+          ? { status: "PRINTED", printed_at: new Date().toISOString() }
+          : { status: "PENDING", printed_at: null };
+        try {
+          const { error } = await sb.from("print_jobs").update(updates).eq("id", id);
+          if (error) throw error;
+          await loadJobs();
+        } catch (e) {
+          console.error(e);
+          alert("Could not update order status: " + e.message);
+        }
+      };
 
       // LOAD ORDERS FROM SUPABASE
       async function loadJobs() {
@@ -553,6 +622,7 @@
           let pending = 0;
           let printed = 0;
           let cash = 0;
+          const totalOrders = (jobs || []).length;
 
           table.clear();
 
@@ -578,6 +648,7 @@
 
           document.getElementById("kpiCash").textContent =
             "₹" + cash.toLocaleString("en-IN");
+          document.getElementById("kpiTotal").textContent = totalOrders.toLocaleString("en-IN");
 
           document.getElementById("lastUpdated").textContent =
             "Updated " +
@@ -614,6 +685,16 @@
           }
         }
       }
+
+      // Handle order actions from the table (works after DataTables redraws).
+      document.querySelector("#jobsTable tbody").addEventListener("click", (event) => {
+        const button = event.target.closest("button[data-action]");
+        if (!button) return;
+        const { action, id } = button.dataset;
+        if (action === "open") window.openDocument(id);
+        if (action === "mark") window.markPrinted(id);
+        if (action === "delete") window.deleteJob(id);
+      });
 
       // INITIAL LOAD
       await loadJobs();

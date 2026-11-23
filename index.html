@@ -3,181 +3,94 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#111827" />
-  <title>QuickPrint | Sharma Xerox & Print Hub</title>
+  <meta name="theme-color" content="#f8fafc" />
+  <title>QuickPrint | Sharma Xerox &amp; Print Hub</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <style>
-    body { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
-    .choice-input:checked + .choice-card { border-color: #4f46e5; background: #eef2ff; box-shadow: 0 0 0 1px #4f46e5 inset; }
-    .choice-input:checked + .choice-card .choice-dot { background: #4f46e5; border-color: #4f46e5; box-shadow: inset 0 0 0 3px white; }
-    .field { width: 100%; border: 1px solid #dbe1ea; border-radius: 13px; padding: 12px 14px; font-size: 14px; outline: none; background: #fff; transition: .18s; }
-    .field:focus { border-color: #6366f1; box-shadow: 0 0 0 3px rgb(99 102 241 / 13%); }
-    .section-kicker { font-size: 11px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; color: #64748b; }
-  </style>
 </head>
-<body class="min-h-screen bg-slate-100 text-slate-900">
-  <main class="mx-auto flex min-h-screen w-full max-w-6xl items-start justify-center px-3 py-5 sm:px-6 sm:py-10">
-    <div class="grid w-full max-w-5xl overflow-hidden rounded-[28px] bg-white shadow-[0_24px_80px_-28px_rgba(15,23,42,.28)] ring-1 ring-slate-200 lg:grid-cols-[.82fr_1.18fr]">
-
-      <!-- Brand / instructions panel -->
-      <aside class="relative overflow-hidden bg-slate-950 px-6 py-7 text-white sm:px-8 sm:py-9">
-        <div class="absolute -right-20 -top-24 h-72 w-72 rounded-full bg-indigo-500/20 blur-3xl"></div>
-        <div class="absolute -bottom-24 -left-20 h-72 w-72 rounded-full bg-cyan-400/10 blur-3xl"></div>
-        <div class="relative">
-          <div class="flex items-center gap-3">
-            <div class="grid h-11 w-11 place-items-center rounded-2xl bg-indigo-500 text-xl shadow-lg shadow-indigo-950/40">🖨️</div>
-            <div>
-              <p class="text-xs font-semibold uppercase tracking-[.18em] text-indigo-200">QuickPrint</p>
-              <h1 class="text-lg font-extrabold tracking-tight">Sharma Xerox & Print Hub</h1>
-            </div>
-          </div>
-
-          <div class="mt-10 max-w-sm">
-            <p class="text-xs font-bold uppercase tracking-[.2em] text-indigo-300">Print made simple</p>
-            <h2 class="mt-3 text-3xl font-black leading-tight sm:text-4xl">Send your files.<br><span class="text-indigo-300">Skip the queue.</span></h2>
-            <p class="mt-4 text-sm leading-6 text-slate-300">Upload your document and choose your print settings. We’ll prepare your order at the counter.</p>
-          </div>
-
-          <div class="mt-9 space-y-4">
-            <div class="flex gap-3">
-              <div class="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-white/10 text-sm font-bold text-indigo-200">1</div>
-              <div><p class="text-sm font-bold">Upload your document</p><p class="mt-1 text-xs leading-5 text-slate-400">PDF, JPG or PNG files accepted.</p></div>
-            </div>
-            <div class="flex gap-3">
-              <div class="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-white/10 text-sm font-bold text-indigo-200">2</div>
-              <div><p class="text-sm font-bold">Choose print settings</p><p class="mt-1 text-xs leading-5 text-slate-400">Select color, paper sides and number of copies.</p></div>
-            </div>
-            <div class="flex gap-3">
-              <div class="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-white/10 text-sm font-bold text-indigo-200">3</div>
-              <div><p class="text-sm font-bold">Collect at the counter</p><p class="mt-1 text-xs leading-5 text-slate-400">Show your order token when you arrive.</p></div>
-            </div>
-          </div>
-
-          <div class="mt-9 flex items-center gap-3 rounded-2xl border border-emerald-400/20 bg-emerald-400/10 p-4">
-            <span class="text-xl">🔒</span>
-            <div><p class="text-xs font-bold text-emerald-200">Privacy reminder</p><p class="mt-1 text-xs leading-5 text-slate-300">Files are scheduled for automatic deletion after 60 minutes.</p></div>
-          </div>
-          <p class="mt-8 text-[11px] text-slate-500">Need help? Please ask the shop attendant.</p>
-        </div>
-      </aside>
-
-      <!-- Upload form -->
-      <section class="px-4 py-6 sm:px-8 sm:py-9">
-        <div class="mx-auto max-w-xl">
-          <div class="mb-7">
-            <div class="flex items-center justify-between">
-              <p class="section-kicker">Customer order form</p>
-              <span class="rounded-full bg-indigo-50 px-3 py-1 text-[11px] font-bold text-indigo-700">STEP 1 OF 1</span>
-            </div>
-            <h2 class="mt-2 text-2xl font-black tracking-tight sm:text-3xl">Create your print order</h2>
-            <p class="mt-2 text-sm text-slate-500">Fill in the details below. Fields marked * are required.</p>
-          </div>
-
-          <form id="printForm" class="space-y-6">
-            <div>
-              <label for="customerName" class="mb-2 block text-sm font-bold text-slate-700">Your name / mobile last 4 digits <span class="text-rose-500">*</span></label>
-              <input type="text" id="customerName" required placeholder="e.g. Rahul - 8842" class="field" />
-            </div>
-
-            <div>
-              <div class="mb-2 flex items-center justify-between gap-3">
-                <label class="text-sm font-bold text-slate-700">Upload document <span class="text-rose-500">*</span></label>
-                <span class="text-[11px] font-medium text-slate-400">PDF · JPG · PNG</span>
-              </div>
-              <label for="fileInput" class="group flex min-h-36 cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-indigo-200 bg-indigo-50/50 px-4 py-5 text-center transition hover:border-indigo-400 hover:bg-indigo-50">
-                <span class="grid h-12 w-12 place-items-center rounded-2xl bg-white text-2xl shadow-sm ring-1 ring-indigo-100 transition group-hover:scale-105">📄</span>
-                <span id="fileLabel" class="mt-3 max-w-full truncate text-sm font-bold text-indigo-700">Tap to choose a file</span>
-                <span id="pageInfo" class="mt-1 text-xs text-slate-500">PDF page count will be detected automatically</span>
-                <span class="mt-3 rounded-lg bg-white px-3 py-1.5 text-xs font-bold text-slate-600 ring-1 ring-slate-200">Browse files</span>
-                <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png" required class="hidden" />
-              </label>
-              <p class="mt-2 text-[11px] text-slate-400">Please upload a clear, readable file.</p>
-            </div>
-
-            <div>
-              <p class="mb-2 section-kicker">Print preferences</p>
-              <div class="grid grid-cols-2 gap-3">
-                <label class="cursor-pointer">
-                  <input type="radio" name="colorMode" value="BW" checked class="choice-input sr-only" />
-                  <div class="choice-card rounded-2xl border border-slate-200 p-4 transition hover:border-indigo-300">
-                    <div class="flex items-center justify-between"><span class="text-xl">⚫</span><span class="choice-dot h-4 w-4 rounded-full border-2 border-slate-300"></span></div>
-                    <p class="mt-3 text-sm font-extrabold">Black & White</p><p class="mt-1 text-xs text-slate-500">₹2 <span class="text-slate-400">/ page</span></p>
-                  </div>
-                </label>
-                <label class="cursor-pointer">
-                  <input type="radio" name="colorMode" value="COLOR" class="choice-input sr-only" />
-                  <div class="choice-card rounded-2xl border border-slate-200 p-4 transition hover:border-indigo-300">
-                    <div class="flex items-center justify-between"><span class="text-xl">🌈</span><span class="choice-dot h-4 w-4 rounded-full border-2 border-slate-300"></span></div>
-                    <p class="mt-3 text-sm font-extrabold">Full Color</p><p class="mt-1 text-xs text-slate-500">₹10 <span class="text-slate-400">/ page</span></p>
-                  </div>
-                </label>
-              </div>
-            </div>
-
-            <div>
-              <label class="mb-2 block text-sm font-bold text-slate-700">Paper sides</label>
-              <div class="grid grid-cols-2 gap-3">
-                <label class="cursor-pointer">
-                  <input type="radio" name="printSide" value="SINGLE" checked class="choice-input sr-only" />
-                  <div class="choice-card flex items-center gap-3 rounded-xl border border-slate-200 p-3 transition">
-                    <span class="text-lg">📄</span><span class="text-xs font-bold sm:text-sm">Single-sided</span><span class="choice-dot ml-auto h-4 w-4 shrink-0 rounded-full border-2 border-slate-300"></span>
-                  </div>
-                </label>
-                <label class="cursor-pointer">
-                  <input type="radio" name="printSide" value="DOUBLE" class="choice-input sr-only" />
-                  <div class="choice-card flex items-center gap-3 rounded-xl border border-slate-200 p-3 transition">
-                    <span class="text-lg">📑</span><span class="text-xs font-bold sm:text-sm">Double-sided</span><span class="choice-dot ml-auto h-4 w-4 shrink-0 rounded-full border-2 border-slate-300"></span>
-                  </div>
-                </label>
-              </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-3">
-              <div>
-                <label for="copies" class="mb-2 block text-sm font-bold text-slate-700">Number of copies</label>
-                <input type="number" id="copies" value="1" min="1" max="500" class="field font-bold" />
-              </div>
-              <div>
-                <label for="pageRange" class="mb-2 block text-sm font-bold text-slate-700">Page range <span class="font-normal text-slate-400">(optional)</span></label>
-                <input type="text" id="pageRange" placeholder="All or 1-5" class="field" />
-              </div>
-            </div>
-
-            <div>
-              <label for="notes" class="mb-2 block text-sm font-bold text-slate-700">Extra instructions <span class="font-normal text-slate-400">(optional)</span></label>
-              <input type="text" id="notes" placeholder="e.g. Spiral binding, thick paper..." class="field" />
-            </div>
-
-            <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-              <div class="flex items-center justify-between gap-4">
-                <div>
-                  <p class="text-xs font-semibold text-slate-500">Estimated total</p>
-                  <p id="totalDisplay" class="mt-1 text-3xl font-black tracking-tight text-slate-950">₹0</p>
-                  <p class="mt-1 text-[11px] text-slate-400">Final amount can be confirmed at the counter.</p>
-                </div>
-                <div class="grid h-12 w-12 place-items-center rounded-2xl bg-white text-2xl shadow-sm ring-1 ring-slate-200">🧾</div>
-              </div>
-              <button type="submit" id="submitBtn" class="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-3.5 text-sm font-extrabold text-white shadow-lg shadow-indigo-600/20 transition hover:bg-indigo-700 active:scale-[.99] disabled:cursor-not-allowed disabled:opacity-60">
-                Send order to printer <span aria-hidden="true">→</span>
-              </button>
-            </div>
-            <p class="text-center text-[11px] leading-5 text-slate-400">By submitting, you confirm that the uploaded document is ready to print.</p>
-          </form>
-        </div>
-      </section>
+<body class="min-h-screen bg-slate-50 font-sans text-slate-800 antialiased">
+  <header class="sticky top-0 z-30 border-b border-slate-200 bg-white/95 shadow-sm backdrop-blur">
+    <div class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
+      <div class="flex min-w-0 items-center gap-3">
+        <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-indigo-700 text-lg text-white shadow-md shadow-indigo-200"><i class="fa-solid fa-print" aria-hidden="true"></i></div>
+        <div class="min-w-0"><p class="text-[10px] font-extrabold uppercase tracking-[0.2em] text-indigo-600">QuickPrint</p><h1 class="truncate text-sm font-extrabold tracking-tight text-slate-950 sm:text-base">Sharma Xerox &amp; Print Hub</h1></div>
+      </div>
+      <div class="hidden items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs font-semibold text-emerald-700 sm:flex"><span class="relative flex h-2.5 w-2.5"><span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60"></span><span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500"></span></span>Online order submission</div>
+      <span class="rounded-full bg-slate-100 px-3 py-2 text-[11px] font-bold text-slate-600 sm:hidden">Customer portal</span>
     </div>
+  </header>
+
+  <main class="mx-auto max-w-6xl px-4 py-7 sm:px-6 sm:py-10 lg:px-8">
+    <section class="mb-7 grid gap-5 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+      <div><p class="mb-2 text-[11px] font-extrabold uppercase tracking-[0.2em] text-indigo-600">Print made simple</p><h2 class="max-w-2xl text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">Place your print order <span class="text-indigo-600">in minutes.</span></h2><p class="mt-3 max-w-2xl text-sm leading-6 text-slate-500 sm:text-base">Upload your document, choose your print preferences and send your order directly to our counter. No need to wait in line just to submit your file.</p></div>
+      <div class="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm"><div class="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600"><i class="fa-regular fa-clock text-lg" aria-hidden="true"></i></div><div><p class="text-xs font-bold text-slate-800">Quick and convenient</p><p class="mt-1 text-[11px] text-slate-500">Submit now, collect at the shop</p></div></div>
+    </section>
+
+    <div class="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
+      <section class="min-w-0">
+        <div class="mb-4 flex items-center justify-between gap-3"><div><p class="text-xs font-bold text-slate-900">New print request</p><p class="mt-1 text-xs text-slate-500">Complete the details below to continue.</p></div><span class="rounded-full border border-indigo-100 bg-indigo-50 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-indigo-700">Order form</span></div>
+        <form id="printForm" class="space-y-4">
+          <section class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+            <div class="mb-5 flex items-center gap-3"><span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-xs font-extrabold text-indigo-700">01</span><div><h3 class="text-sm font-extrabold text-slate-900">Your details</h3><p class="mt-0.5 text-xs text-slate-500">Tell us who this order belongs to.</p></div></div>
+            <div class="grid gap-4 sm:grid-cols-2">
+              <div><label for="customerName" class="mb-2 block text-xs font-bold text-slate-700">Customer name <span class="text-rose-500">*</span></label><input type="text" id="customerName" required maxlength="80" placeholder="e.g. Rahul Sharma" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100" autocomplete="name" /></div>
+              <div><label for="customerPhone" class="mb-2 block text-xs font-bold text-slate-700">Mobile number <span class="text-rose-500">*</span></label><input type="tel" id="customerPhone" required inputmode="numeric" maxlength="10" pattern="[6-9][0-9]{9}" placeholder="10-digit mobile number" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100" autocomplete="tel-national" /></div>
+            </div><p class="mt-3 flex items-center gap-2 text-[11px] text-slate-400"><i class="fa-solid fa-circle-info text-indigo-400" aria-hidden="true"></i> We may contact you about your order and collection.</p>
+          </section>
+
+          <section class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+            <div class="mb-5 flex items-center gap-3"><span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-xs font-extrabold text-indigo-700">02</span><div><h3 class="text-sm font-extrabold text-slate-900">Upload your document</h3><p class="mt-0.5 text-xs text-slate-500">Choose the PDF or image you want us to print.</p></div></div>
+            <label for="fileInput" class="group flex min-h-44 cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-indigo-200 bg-indigo-50/50 px-4 py-7 text-center transition hover:border-indigo-500 hover:bg-indigo-50">
+              <span class="mb-3 flex h-14 w-14 animate-pulse items-center justify-center rounded-2xl bg-white text-xl text-indigo-600 shadow-sm"><i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i></span><span id="fileLabel" class="max-w-full truncate text-sm font-extrabold text-indigo-700">Choose a file to upload</span><span id="pageInfo" class="mt-1 text-xs text-slate-500">PDF page count will be detected automatically</span><span class="mt-4 rounded-lg bg-white px-4 py-2 text-xs font-bold text-slate-700 shadow-sm ring-1 ring-slate-200 transition group-hover:text-indigo-700"><i class="fa-regular fa-folder-open mr-2" aria-hidden="true"></i>Browse files</span><input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png" required class="hidden" />
+            </label>
+            <div class="mt-3 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-500"><span><i class="fa-regular fa-file-pdf mr-1 text-rose-500" aria-hidden="true"></i>PDF, JPG or PNG</span><span><i class="fa-solid fa-shield-halved mr-1 text-emerald-600" aria-hidden="true"></i>Maximum file size: 20 MB</span></div><p class="mt-3 text-[11px] leading-5 text-slate-400">Before submitting, check that every page is clear, correctly oriented and includes the content you need printed.</p>
+          </section>
+
+          <section class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+            <div class="mb-5 flex items-center gap-3"><span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-xs font-extrabold text-indigo-700">03</span><div><h3 class="text-sm font-extrabold text-slate-900">Print preferences</h3><p class="mt-0.5 text-xs text-slate-500">Choose how you want your document printed.</p></div></div>
+            <p class="mb-3 text-xs font-bold text-slate-700">Colour mode</p>
+            <div class="mb-6 grid grid-cols-2 gap-3">
+              <label class="cursor-pointer"><input type="radio" name="colorMode" value="BW" checked class="peer sr-only" /><div class="rounded-xl border border-slate-200 bg-white p-4 transition hover:border-indigo-300 peer-checked:border-indigo-600 peer-checked:bg-indigo-50 peer-checked:ring-1 peer-checked:ring-indigo-600"><div class="flex items-center justify-between"><i class="fa-solid fa-circle-half-stroke text-slate-400" aria-hidden="true"></i><span class="h-4 w-4 rounded-full border-2 border-slate-300 peer-checked:border-indigo-600"></span></div><p class="mt-3 text-sm font-extrabold text-slate-800">Black &amp; White</p><p class="mt-1 text-xs text-slate-500">₹2 <span class="text-slate-400">per page</span></p></div></label>
+              <label class="cursor-pointer"><input type="radio" name="colorMode" value="COLOR" class="peer sr-only" /><div class="rounded-xl border border-slate-200 bg-white p-4 transition hover:border-indigo-300 peer-checked:border-indigo-600 peer-checked:bg-indigo-50 peer-checked:ring-1 peer-checked:ring-indigo-600"><div class="flex items-center justify-between"><i class="fa-solid fa-palette text-slate-400" aria-hidden="true"></i><span class="h-4 w-4 rounded-full border-2 border-slate-300"></span></div><p class="mt-3 text-sm font-extrabold text-slate-800">Full Colour</p><p class="mt-1 text-xs text-slate-500">₹10 <span class="text-slate-400">per page</span></p></div></label>
+            </div>
+            <p class="mb-3 text-xs font-bold text-slate-700">Paper sides</p>
+            <div class="grid grid-cols-2 gap-3">
+              <label class="cursor-pointer"><input type="radio" name="printSide" value="SINGLE" checked class="peer sr-only" /><div class="flex items-center gap-2 rounded-xl border border-slate-200 p-3 transition hover:border-indigo-300 peer-checked:border-indigo-600 peer-checked:bg-indigo-50"><i class="fa-regular fa-file-lines text-slate-400" aria-hidden="true"></i><span class="text-xs font-bold text-slate-700 sm:text-sm">Single-sided</span><span class="ml-auto h-4 w-4 shrink-0 rounded-full border-2 border-slate-300"></span></div></label>
+              <label class="cursor-pointer"><input type="radio" name="printSide" value="DOUBLE" class="peer sr-only" /><div class="flex items-center gap-2 rounded-xl border border-slate-200 p-3 transition hover:border-indigo-300 peer-checked:border-indigo-600 peer-checked:bg-indigo-50"><i class="fa-regular fa-copy text-slate-400" aria-hidden="true"></i><span class="text-xs font-bold text-slate-700 sm:text-sm">Double-sided</span><span class="ml-auto h-4 w-4 shrink-0 rounded-full border-2 border-slate-300"></span></div></label>
+            </div>
+            <div class="mt-5 grid gap-4 sm:grid-cols-2"><div><label for="paperSize" class="mb-2 block text-xs font-bold text-slate-700">Paper size</label><select id="paperSize" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"><option value="A4">A4</option><option value="A3">A3</option><option value="LEGAL">Legal</option><option value="LETTER">Letter</option></select></div><div><label for="orientation" class="mb-2 block text-xs font-bold text-slate-700">Page orientation</label><select id="orientation" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"><option value="PORTRAIT">Portrait</option><option value="LANDSCAPE">Landscape</option></select></div></div>
+            <div class="mt-4"><label for="paperQuality" class="mb-2 block text-xs font-bold text-slate-700">Paper quality</label><select id="paperQuality" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"><option value="NORMAL">Normal paper</option><option value="PREMIUM">Premium paper</option></select></div>
+          </section>
+
+          <section class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+            <div class="mb-5 flex items-center gap-3"><span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-xs font-extrabold text-indigo-700">04</span><div><h3 class="text-sm font-extrabold text-slate-900">Copies and instructions</h3><p class="mt-0.5 text-xs text-slate-500">Add quantity and any special requests.</p></div></div>
+            <div class="grid grid-cols-2 gap-3"><div><label for="copies" class="mb-2 block text-xs font-bold text-slate-700">Number of copies</label><input type="number" id="copies" value="1" min="1" max="500" class="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm font-bold outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100" /></div><div><label for="pageRange" class="mb-2 block text-xs font-bold text-slate-700">Page range <span class="font-normal text-slate-400">(optional)</span></label><input type="text" id="pageRange" placeholder="All or 1-5" class="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100" /></div></div>
+            <div class="mt-4 grid gap-4 sm:grid-cols-2"><div><label for="finishing" class="mb-2 block text-xs font-bold text-slate-700">Finishing</label><select id="finishing" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"><option value="NONE">No finishing</option><option value="STAPLING">Stapling</option><option value="SPIRAL">Spiral binding</option><option value="LAMINATION">Lamination</option></select></div><div><label for="orderUrgency" class="mb-2 block text-xs font-bold text-slate-700">Order priority</label><select id="orderUrgency" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"><option value="NORMAL">Normal</option><option value="URGENT">Urgent — please confirm</option></select></div></div>
+            <div class="mt-4"><label for="pickupTime" class="mb-2 block text-xs font-bold text-slate-700">Preferred pickup date &amp; time <span class="font-normal text-slate-400">(optional)</span></label><input type="datetime-local" id="pickupTime" class="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100" /><p class="mt-1 text-[11px] text-slate-400">This is a request only. The shop will confirm availability.</p></div>
+            <div class="mt-4"><label for="notes" class="mb-2 block text-xs font-bold text-slate-700">Extra instructions <span class="font-normal text-slate-400">(optional)</span></label><textarea id="notes" rows="3" maxlength="500" placeholder="Any special instructions for this order..." class="w-full resize-y rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"></textarea></div>
+          </section>
+
+          <section class="rounded-2xl border border-indigo-200 bg-white p-4 shadow-md shadow-indigo-100/50 sm:p-6"><div class="flex flex-wrap items-center justify-between gap-4"><div><p class="text-xs font-bold text-slate-500">Estimated order total</p><p id="totalDisplay" class="mt-1 text-3xl font-black tracking-tight text-slate-950">₹0</p><p class="mt-1 text-[11px] text-slate-400">Final amount can be confirmed at the counter.</p></div><div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-50 text-xl text-indigo-600"><i class="fa-solid fa-receipt" aria-hidden="true"></i></div></div><button type="submit" id="submitBtn" class="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-3.5 text-sm font-extrabold text-white shadow-lg shadow-indigo-200 transition hover:-translate-y-0.5 hover:bg-indigo-700 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-indigo-200 disabled:cursor-not-allowed disabled:opacity-60">Submit print order <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button><p class="mt-3 text-center text-[11px] leading-5 text-slate-400">Please check your file and print settings before submitting.</p></section>
+        </form>
+      </section>
+
+      <aside class="space-y-4 lg:sticky lg:top-24">
+        <div class="overflow-hidden rounded-2xl bg-slate-950 p-5 text-white shadow-xl shadow-slate-900/10"><div class="flex items-center gap-2 text-indigo-200"><i class="fa-solid fa-list-check" aria-hidden="true"></i><p class="text-[10px] font-extrabold uppercase tracking-[0.2em]">Simple process</p></div><h3 class="mt-3 text-xl font-black leading-tight">Your print order, without the queue.</h3><p class="mt-2 text-xs leading-5 text-slate-300">Send your file before you reach the counter. Our team can view your requirements and prepare the order.</p><div class="mt-5 space-y-4"><div class="flex gap-3"><span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-white/10 text-xs font-extrabold text-indigo-200">1</span><div><p class="text-xs font-bold">Upload your file</p><p class="mt-1 text-[11px] leading-4 text-slate-400">Select a PDF, JPG or PNG document.</p></div></div><div class="flex gap-3"><span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-white/10 text-xs font-extrabold text-indigo-200">2</span><div><p class="text-xs font-bold">Choose print settings</p><p class="mt-1 text-[11px] leading-4 text-slate-400">Choose paper size, colour, sides and finishing.</p></div></div><div class="flex gap-3"><span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-white/10 text-xs font-extrabold text-indigo-200">3</span><div><p class="text-xs font-bold">Collect at the counter</p><p class="mt-1 text-[11px] leading-4 text-slate-400">Show your order token when you arrive.</p></div></div></div></div>
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><div class="flex items-center gap-2"><i class="fa-solid fa-shield-halved text-emerald-600" aria-hidden="true"></i><h3 class="text-xs font-extrabold text-slate-900">A quick privacy note</h3></div><p class="mt-2 text-xs leading-5 text-slate-500">Upload only documents you want the shop to print. For this demo, please use sample files and avoid sensitive personal documents.</p></div>
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><div class="flex items-center gap-2"><i class="fa-solid fa-headset text-indigo-600" aria-hidden="true"></i><p class="text-xs font-extrabold text-slate-900">Need assistance?</p></div><p class="mt-2 text-xs leading-5 text-slate-500">If you need help choosing print settings or uploading a file, please ask the shop attendant.</p></div>
+      </aside>
+    </div>
+    <footer class="mt-8 border-t border-slate-200 pt-5 text-center text-[11px] text-slate-400">© QuickPrint · Sharma Xerox &amp; Print Hub</footer>
   </main>
 
- 
 <script type="module">
   import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
   // Supabase configuration
   const SUPABASE_URL = "https://zsgnzdcrdwuuzgbumqag.supabase.co";
   const SUPABASE_KEY = "sb_publishable_vBA4mmgPUynynUm0wQ2KqA_O8N9ksOx";
-
   const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 
   pdfjsLib.GlobalWorkerOptions.workerSrc =
@@ -191,7 +104,6 @@
     const color = document.querySelector('input[name="colorMode"]:checked').value;
     const rate = color === 'COLOR' ? 10 : 2;
     const total = detectedPages * copies * rate;
-
     document.getElementById('totalDisplay').textContent = `₹${total}`;
     return total;
   }
@@ -206,39 +118,38 @@
     selectedFile = e.target.files[0];
     if (!selectedFile) return;
 
+    const allowedFile = /\.(pdf|jpe?g|png)$/i.test(selectedFile.name);
+    const maxFileSize = 20 * 1024 * 1024;
+
+    if (!allowedFile || selectedFile.size > maxFileSize) {
+      selectedFile = null;
+      detectedPages = 0;
+      e.target.value = '';
+      document.getElementById('fileLabel').textContent = 'Choose a file to upload';
+      document.getElementById('pageInfo').textContent = 'PDF, JPG or PNG · Maximum 20 MB';
+      calculateTotal();
+      Swal.fire('File not supported', 'Please choose a PDF, JPG or PNG file smaller than 20 MB.', 'warning');
+      return;
+    }
+
     document.getElementById('fileLabel').textContent = selectedFile.name;
 
     try {
-      if (
-        selectedFile.type === 'application/pdf' ||
-        selectedFile.name.toLowerCase().endsWith('.pdf')
-      ) {
+      if (selectedFile.type === 'application/pdf' || selectedFile.name.toLowerCase().endsWith('.pdf')) {
         const arrayBuffer = await selectedFile.arrayBuffer();
         const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-
         detectedPages = pdf.numPages;
-        document.getElementById('pageInfo').textContent =
-          `✓ ${detectedPages} page(s) detected`;
+        document.getElementById('pageInfo').textContent = `✓ ${detectedPages} page(s) detected`;
       } else {
         detectedPages = 1;
-        document.getElementById('pageInfo').textContent =
-          '✓ Image file (1 page)';
+        document.getElementById('pageInfo').textContent = '✓ Image file (1 page)';
       }
-
       calculateTotal();
-
     } catch (err) {
       detectedPages = 0;
-      document.getElementById('pageInfo').textContent =
-        'Could not read this file. Please choose another file.';
-
+      document.getElementById('pageInfo').textContent = 'Could not read this file. Please choose another file.';
       calculateTotal();
-
-      Swal.fire(
-        'Unable to read file',
-        'Please upload a valid PDF, JPG or PNG file.',
-        'error'
-      );
+      Swal.fire('Unable to read file', 'Please upload a valid PDF, JPG or PNG file.', 'error');
     }
   });
 
@@ -247,62 +158,55 @@
     e.preventDefault();
 
     if (!selectedFile || detectedPages < 1) {
-      Swal.fire(
-        'Select a document',
-        'Please choose a valid file before submitting.',
-        'warning'
-      );
+      Swal.fire('Select a document', 'Please choose a valid file before submitting.', 'warning');
       return;
     }
 
     const btn = document.getElementById('submitBtn');
     btn.disabled = true;
-    btn.textContent = 'Uploading...';
-
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> Uploading...';
     let uploadedPath = null;
 
     try {
       const safeFileName = selectedFile.name.replace(/[^\w.-]/g, '_');
-
       // Path is inside the "prints" bucket, so do not prefix it with "prints/"
       const storagePath = `${Date.now()}_${safeFileName}`;
 
       // Upload file to private Supabase Storage bucket
-      const { error: uploadError } = await sb.storage
-        .from('prints')
-        .upload(storagePath, selectedFile, {
-          contentType: selectedFile.type,
-          upsert: false
-        });
-
+      const { error: uploadError } = await sb.storage.from('prints').upload(storagePath, selectedFile, {
+        contentType: selectedFile.type,
+        upsert: false
+      });
       if (uploadError) throw uploadError;
-
       uploadedPath = storagePath;
 
       const token = `#${Math.floor(100 + Math.random() * 900)}`;
       const total = calculateTotal();
 
       // Save order in Supabase database
-      const { error: insertError } = await sb
-        .from('print_jobs')
-        .insert({
-          token: token,
-          customer_name: document.getElementById('customerName').value,
-          file_name: selectedFile.name,
-          file_path: storagePath,
-          pages: detectedPages,
-          copies: parseInt(document.getElementById('copies').value) || 1,
-          color_mode: document.querySelector('input[name="colorMode"]:checked').value,
-          print_side: document.querySelector('input[name="printSide"]:checked').value,
-          page_range: document.getElementById('pageRange').value || 'All',
-          notes: document.getElementById('notes').value || '',
-          total: total,
-          status: 'PENDING'
-        });
-
+      const { error: insertError } = await sb.from('print_jobs').insert({
+        token: token,
+        customer_name: document.getElementById('customerName').value.trim(),
+        customer_phone: document.getElementById('customerPhone').value.trim(),
+        file_name: selectedFile.name,
+        file_path: storagePath,
+        pages: detectedPages,
+        copies: parseInt(document.getElementById('copies').value) || 1,
+        color_mode: document.querySelector('input[name="colorMode"]:checked').value,
+        print_side: document.querySelector('input[name="printSide"]:checked').value,
+        paper_size: document.getElementById('paperSize').value,
+        orientation: document.getElementById('orientation').value,
+        paper_quality: document.getElementById('paperQuality').value,
+        finishing: document.getElementById('finishing').value,
+        urgency: document.getElementById('orderUrgency').value,
+        pickup_time: document.getElementById('pickupTime').value || null,
+        page_range: document.getElementById('pageRange').value.trim() || 'All',
+        notes: document.getElementById('notes').value.trim() || '',
+        total: total,
+        status: 'PENDING'
+      });
       if (insertError) throw insertError;
 
-      // Show successful order message
       Swal.fire({
         icon: 'success',
         title: `Token ${token} Sent!`,
@@ -311,35 +215,22 @@
       });
 
       this.reset();
-
       selectedFile = null;
       detectedPages = 0;
-
-      document.getElementById('fileLabel').textContent = 'Tap to choose a file';
-      document.getElementById('pageInfo').textContent =
-        'PDF page count will be detected automatically';
+      document.getElementById('fileLabel').textContent = 'Choose a file to upload';
+      document.getElementById('pageInfo').textContent = 'PDF page count will be detected automatically';
       document.getElementById('totalDisplay').textContent = '₹0';
 
     } catch (err) {
       console.error('Order submission failed:', err);
-
       // Remove uploaded file if saving the order failed
-      if (uploadedPath) {
-        await sb.storage.from('prints').remove([uploadedPath]);
-      }
-
-      Swal.fire(
-        'Upload Failed',
-        err.message || 'Please try again.',
-        'error'
-      );
-
+      if (uploadedPath) await sb.storage.from('prints').remove([uploadedPath]);
+      Swal.fire('Upload Failed', err.message || 'Please try again.', 'error');
     } finally {
       btn.disabled = false;
-      btn.innerHTML = 'Send order to printer <span aria-hidden="true">→</span>';
+      btn.innerHTML = 'Submit print order <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>';
     }
   });
 </script>
-
 </body>
 </html>

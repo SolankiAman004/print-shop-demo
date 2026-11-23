@@ -3,216 +3,343 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>QuickPrint - Customer Upload</title>
+  <meta name="theme-color" content="#111827" />
+  <title>QuickPrint | Sharma Xerox & Print Hub</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    body { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    .choice-input:checked + .choice-card { border-color: #4f46e5; background: #eef2ff; box-shadow: 0 0 0 1px #4f46e5 inset; }
+    .choice-input:checked + .choice-card .choice-dot { background: #4f46e5; border-color: #4f46e5; box-shadow: inset 0 0 0 3px white; }
+    .field { width: 100%; border: 1px solid #dbe1ea; border-radius: 13px; padding: 12px 14px; font-size: 14px; outline: none; background: #fff; transition: .18s; }
+    .field:focus { border-color: #6366f1; box-shadow: 0 0 0 3px rgb(99 102 241 / 13%); }
+    .section-kicker { font-size: 11px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; color: #64748b; }
+  </style>
 </head>
-<body class="bg-slate-100 min-h-screen flex items-center justify-center p-4">
+<body class="min-h-screen bg-slate-100 text-slate-900">
+  <main class="mx-auto flex min-h-screen w-full max-w-6xl items-start justify-center px-3 py-5 sm:px-6 sm:py-10">
+    <div class="grid w-full max-w-5xl overflow-hidden rounded-[28px] bg-white shadow-[0_24px_80px_-28px_rgba(15,23,42,.28)] ring-1 ring-slate-200 lg:grid-cols-[.82fr_1.18fr]">
 
-  <div class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-200">
-    <!-- Header -->
-    <div class="bg-indigo-600 p-5 text-white text-center">
-      <h1 class="text-xl font-bold">Sharma Xerox & Print Hub</h1>
-      <p class="text-indigo-100 text-xs mt-1">Scan • Upload • Collect at Counter</p>
-      <div class="mt-3 inline-flex items-center gap-1.5 bg-emerald-500/20 text-emerald-100 text-xs px-3 py-1 rounded-full">
-        <span>🔒 Privacy Safe: Auto-deletes in 60 mins</span>
-      </div>
-    </div>
-
-    <!-- Form -->
-    <form id="printForm" class="p-5 space-y-4">
-      <div>
-        <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Your Name / Mobile Last 4 Digits *</label>
-        <input type="text" id="customerName" required placeholder="e.g. Rahul - 8842"
-          class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
-      </div>
-
-      <div>
-        <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Select Document (PDF, JPG, PNG) *</label>
-        <label class="flex flex-col items-center justify-center w-full h-28 border-2 border-dashed border-indigo-300 rounded-xl cursor-pointer bg-indigo-50/50 hover:bg-indigo-50 transition">
-          <div class="text-center px-3">
-            <p id="fileLabel" class="text-sm font-medium text-indigo-700">Tap to choose file</p>
-            <p id="pageInfo" class="text-xs text-slate-500 mt-1">Auto-detects PDF page count</p>
+      <!-- Brand / instructions panel -->
+      <aside class="relative overflow-hidden bg-slate-950 px-6 py-7 text-white sm:px-8 sm:py-9">
+        <div class="absolute -right-20 -top-24 h-72 w-72 rounded-full bg-indigo-500/20 blur-3xl"></div>
+        <div class="absolute -bottom-24 -left-20 h-72 w-72 rounded-full bg-cyan-400/10 blur-3xl"></div>
+        <div class="relative">
+          <div class="flex items-center gap-3">
+            <div class="grid h-11 w-11 place-items-center rounded-2xl bg-indigo-500 text-xl shadow-lg shadow-indigo-950/40">🖨️</div>
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-[.18em] text-indigo-200">QuickPrint</p>
+              <h1 class="text-lg font-extrabold tracking-tight">Sharma Xerox & Print Hub</h1>
+            </div>
           </div>
-          <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png" required class="hidden" />
-        </label>
-      </div>
 
-      <div>
-        <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Print Color</label>
-        <div class="grid grid-cols-2 gap-2.5">
-          <label class="cursor-pointer">
-            <input type="radio" name="colorMode" value="BW" checked class="peer hidden" />
-            <div class="p-3 rounded-xl border-2 border-slate-200 peer-checked:border-indigo-600 peer-checked:bg-indigo-50 text-center">
-              <div class="font-bold text-slate-800 text-sm">Black & White</div>
-              <div class="text-xs text-slate-500">₹2 / page</div>
+          <div class="mt-10 max-w-sm">
+            <p class="text-xs font-bold uppercase tracking-[.2em] text-indigo-300">Print made simple</p>
+            <h2 class="mt-3 text-3xl font-black leading-tight sm:text-4xl">Send your files.<br><span class="text-indigo-300">Skip the queue.</span></h2>
+            <p class="mt-4 text-sm leading-6 text-slate-300">Upload your document and choose your print settings. We’ll prepare your order at the counter.</p>
+          </div>
+
+          <div class="mt-9 space-y-4">
+            <div class="flex gap-3">
+              <div class="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-white/10 text-sm font-bold text-indigo-200">1</div>
+              <div><p class="text-sm font-bold">Upload your document</p><p class="mt-1 text-xs leading-5 text-slate-400">PDF, JPG or PNG files accepted.</p></div>
             </div>
-          </label>
-          <label class="cursor-pointer">
-            <input type="radio" name="colorMode" value="COLOR" class="peer hidden" />
-            <div class="p-3 rounded-xl border-2 border-slate-200 peer-checked:border-orange-500 peer-checked:bg-orange-50 text-center">
-              <div class="font-bold text-orange-600 text-sm">Full Color</div>
-              <div class="text-xs text-slate-500">₹10 / page</div>
+            <div class="flex gap-3">
+              <div class="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-white/10 text-sm font-bold text-indigo-200">2</div>
+              <div><p class="text-sm font-bold">Choose print settings</p><p class="mt-1 text-xs leading-5 text-slate-400">Select color, paper sides and number of copies.</p></div>
             </div>
-          </label>
+            <div class="flex gap-3">
+              <div class="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-white/10 text-sm font-bold text-indigo-200">3</div>
+              <div><p class="text-sm font-bold">Collect at the counter</p><p class="mt-1 text-xs leading-5 text-slate-400">Show your order token when you arrive.</p></div>
+            </div>
+          </div>
+
+          <div class="mt-9 flex items-center gap-3 rounded-2xl border border-emerald-400/20 bg-emerald-400/10 p-4">
+            <span class="text-xl">🔒</span>
+            <div><p class="text-xs font-bold text-emerald-200">Privacy reminder</p><p class="mt-1 text-xs leading-5 text-slate-300">Files are scheduled for automatic deletion after 60 minutes.</p></div>
+          </div>
+          <p class="mt-8 text-[11px] text-slate-500">Need help? Please ask the shop attendant.</p>
         </div>
-      </div>
+      </aside>
 
-      <div>
-        <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Paper Sides</label>
-        <div class="grid grid-cols-2 gap-2.5">
-          <label class="cursor-pointer">
-            <input type="radio" name="printSide" value="SINGLE" checked class="peer hidden" />
-            <div class="p-2.5 rounded-xl border-2 border-slate-200 peer-checked:border-indigo-600 peer-checked:bg-indigo-50 text-center text-sm font-semibold">Single-Sided</div>
-          </label>
-          <label class="cursor-pointer">
-            <input type="radio" name="printSide" value="DOUBLE" class="peer hidden" />
-            <div class="p-2.5 rounded-xl border-2 border-slate-200 peer-checked:border-blue-600 peer-checked:bg-blue-50 text-center text-sm font-semibold text-blue-700">Double-Sided</div>
-          </label>
+      <!-- Upload form -->
+      <section class="px-4 py-6 sm:px-8 sm:py-9">
+        <div class="mx-auto max-w-xl">
+          <div class="mb-7">
+            <div class="flex items-center justify-between">
+              <p class="section-kicker">Customer order form</p>
+              <span class="rounded-full bg-indigo-50 px-3 py-1 text-[11px] font-bold text-indigo-700">STEP 1 OF 1</span>
+            </div>
+            <h2 class="mt-2 text-2xl font-black tracking-tight sm:text-3xl">Create your print order</h2>
+            <p class="mt-2 text-sm text-slate-500">Fill in the details below. Fields marked * are required.</p>
+          </div>
+
+          <form id="printForm" class="space-y-6">
+            <div>
+              <label for="customerName" class="mb-2 block text-sm font-bold text-slate-700">Your name / mobile last 4 digits <span class="text-rose-500">*</span></label>
+              <input type="text" id="customerName" required placeholder="e.g. Rahul - 8842" class="field" />
+            </div>
+
+            <div>
+              <div class="mb-2 flex items-center justify-between gap-3">
+                <label class="text-sm font-bold text-slate-700">Upload document <span class="text-rose-500">*</span></label>
+                <span class="text-[11px] font-medium text-slate-400">PDF · JPG · PNG</span>
+              </div>
+              <label for="fileInput" class="group flex min-h-36 cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-indigo-200 bg-indigo-50/50 px-4 py-5 text-center transition hover:border-indigo-400 hover:bg-indigo-50">
+                <span class="grid h-12 w-12 place-items-center rounded-2xl bg-white text-2xl shadow-sm ring-1 ring-indigo-100 transition group-hover:scale-105">📄</span>
+                <span id="fileLabel" class="mt-3 max-w-full truncate text-sm font-bold text-indigo-700">Tap to choose a file</span>
+                <span id="pageInfo" class="mt-1 text-xs text-slate-500">PDF page count will be detected automatically</span>
+                <span class="mt-3 rounded-lg bg-white px-3 py-1.5 text-xs font-bold text-slate-600 ring-1 ring-slate-200">Browse files</span>
+                <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png" required class="hidden" />
+              </label>
+              <p class="mt-2 text-[11px] text-slate-400">Please upload a clear, readable file.</p>
+            </div>
+
+            <div>
+              <p class="mb-2 section-kicker">Print preferences</p>
+              <div class="grid grid-cols-2 gap-3">
+                <label class="cursor-pointer">
+                  <input type="radio" name="colorMode" value="BW" checked class="choice-input sr-only" />
+                  <div class="choice-card rounded-2xl border border-slate-200 p-4 transition hover:border-indigo-300">
+                    <div class="flex items-center justify-between"><span class="text-xl">⚫</span><span class="choice-dot h-4 w-4 rounded-full border-2 border-slate-300"></span></div>
+                    <p class="mt-3 text-sm font-extrabold">Black & White</p><p class="mt-1 text-xs text-slate-500">₹2 <span class="text-slate-400">/ page</span></p>
+                  </div>
+                </label>
+                <label class="cursor-pointer">
+                  <input type="radio" name="colorMode" value="COLOR" class="choice-input sr-only" />
+                  <div class="choice-card rounded-2xl border border-slate-200 p-4 transition hover:border-indigo-300">
+                    <div class="flex items-center justify-between"><span class="text-xl">🌈</span><span class="choice-dot h-4 w-4 rounded-full border-2 border-slate-300"></span></div>
+                    <p class="mt-3 text-sm font-extrabold">Full Color</p><p class="mt-1 text-xs text-slate-500">₹10 <span class="text-slate-400">/ page</span></p>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <div>
+              <label class="mb-2 block text-sm font-bold text-slate-700">Paper sides</label>
+              <div class="grid grid-cols-2 gap-3">
+                <label class="cursor-pointer">
+                  <input type="radio" name="printSide" value="SINGLE" checked class="choice-input sr-only" />
+                  <div class="choice-card flex items-center gap-3 rounded-xl border border-slate-200 p-3 transition">
+                    <span class="text-lg">📄</span><span class="text-xs font-bold sm:text-sm">Single-sided</span><span class="choice-dot ml-auto h-4 w-4 shrink-0 rounded-full border-2 border-slate-300"></span>
+                  </div>
+                </label>
+                <label class="cursor-pointer">
+                  <input type="radio" name="printSide" value="DOUBLE" class="choice-input sr-only" />
+                  <div class="choice-card flex items-center gap-3 rounded-xl border border-slate-200 p-3 transition">
+                    <span class="text-lg">📑</span><span class="text-xs font-bold sm:text-sm">Double-sided</span><span class="choice-dot ml-auto h-4 w-4 shrink-0 rounded-full border-2 border-slate-300"></span>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label for="copies" class="mb-2 block text-sm font-bold text-slate-700">Number of copies</label>
+                <input type="number" id="copies" value="1" min="1" max="500" class="field font-bold" />
+              </div>
+              <div>
+                <label for="pageRange" class="mb-2 block text-sm font-bold text-slate-700">Page range <span class="font-normal text-slate-400">(optional)</span></label>
+                <input type="text" id="pageRange" placeholder="All or 1-5" class="field" />
+              </div>
+            </div>
+
+            <div>
+              <label for="notes" class="mb-2 block text-sm font-bold text-slate-700">Extra instructions <span class="font-normal text-slate-400">(optional)</span></label>
+              <input type="text" id="notes" placeholder="e.g. Spiral binding, thick paper..." class="field" />
+            </div>
+
+            <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+              <div class="flex items-center justify-between gap-4">
+                <div>
+                  <p class="text-xs font-semibold text-slate-500">Estimated total</p>
+                  <p id="totalDisplay" class="mt-1 text-3xl font-black tracking-tight text-slate-950">₹0</p>
+                  <p class="mt-1 text-[11px] text-slate-400">Final amount can be confirmed at the counter.</p>
+                </div>
+                <div class="grid h-12 w-12 place-items-center rounded-2xl bg-white text-2xl shadow-sm ring-1 ring-slate-200">🧾</div>
+              </div>
+              <button type="submit" id="submitBtn" class="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-3.5 text-sm font-extrabold text-white shadow-lg shadow-indigo-600/20 transition hover:bg-indigo-700 active:scale-[.99] disabled:cursor-not-allowed disabled:opacity-60">
+                Send order to printer <span aria-hidden="true">→</span>
+              </button>
+            </div>
+            <p class="text-center text-[11px] leading-5 text-slate-400">By submitting, you confirm that the uploaded document is ready to print.</p>
+          </form>
         </div>
-      </div>
+      </section>
+    </div>
+  </main>
 
-      <div class="grid grid-cols-2 gap-3">
-        <div>
-          <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Copies</label>
-          <input type="number" id="copies" value="1" min="1" max="500" class="w-full px-3 py-2 rounded-xl border border-slate-300 font-bold text-sm" />
-        </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Pages (Optional)</label>
-          <input type="text" id="pageRange" placeholder="All (or 1-5)" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm" />
-        </div>
-      </div>
+ 
+<script type="module">
+  import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-      <div>
-        <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Extra Instructions (Optional)</label>
-        <input type="text" id="notes" placeholder="e.g. Spiral binding, thick paper..." class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm" />
-      </div>
+  // Supabase configuration
+  const SUPABASE_URL = "https://zsgnzdcrdwuuzgbumqag.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_vBA4mmgPUynynUm0wQ2KqA_O8N9ksOx";
 
-      <div class="pt-2 border-t border-slate-200 flex items-center justify-between">
-        <div>
-          <span class="text-xs text-slate-500 block">Estimated Total</span>
-          <span id="totalDisplay" class="text-2xl font-extrabold text-slate-900">₹0</span>
-        </div>
-        <button type="submit" id="submitBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition">
-          Send to Printer →
-        </button>
-      </div>
-    </form>
-  </div>
+  const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAE5POEDBJhbAdwHriuYiut9g9Z8L_JKGA",
-      authDomain: "print-shop-demo.firebaseapp.com",
-      projectId: "print-shop-demo",
-      storageBucket: "print-shop-demo.firebasestorage.app",
-      messagingSenderId: "777021975636",
-      appId: "1:777021975636:web:1427ffea10f5c5adb391c1",
-      measurementId: "G-K9JPYQNQ6S"
-    };
+  let detectedPages = 0;
+  let selectedFile = null;
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const storage = getStorage(app);
+  function calculateTotal() {
+    const copies = parseInt(document.getElementById('copies').value) || 1;
+    const color = document.querySelector('input[name="colorMode"]:checked').value;
+    const rate = color === 'COLOR' ? 10 : 2;
+    const total = detectedPages * copies * rate;
 
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    document.getElementById('totalDisplay').textContent = `₹${total}`;
+    return total;
+  }
 
-    let detectedPages = 0;
-    let selectedFile = null;
+  document.querySelectorAll('input[name="colorMode"], #copies').forEach(el => {
+    el.addEventListener('change', calculateTotal);
+    el.addEventListener('input', calculateTotal);
+  });
 
-    function calculateTotal() {
-      const copies = parseInt(document.getElementById('copies').value) || 1;
-      const color = document.querySelector('input[name="colorMode"]:checked').value;
-      const rate = color === 'COLOR' ? 10 : 2;
-      const total = detectedPages * copies * rate;
-      document.getElementById('totalDisplay').textContent = `₹${total}`;
-      return total;
-    }
+  // Detect uploaded file and PDF page count
+  document.getElementById('fileInput').addEventListener('change', async function(e) {
+    selectedFile = e.target.files[0];
+    if (!selectedFile) return;
 
-    document.querySelectorAll('input[name="colorMode"], #copies').forEach(el => {
-      el.addEventListener('change', calculateTotal);
-      el.addEventListener('input', calculateTotal);
-    });
+    document.getElementById('fileLabel').textContent = selectedFile.name;
 
-    document.getElementById('fileInput').addEventListener('change', async function(e) {
-      selectedFile = e.target.files[0];
-      if (!selectedFile) return;
-
-      document.getElementById('fileLabel').textContent = selectedFile.name;
-
-      if (selectedFile.type === 'application/pdf') {
+    try {
+      if (
+        selectedFile.type === 'application/pdf' ||
+        selectedFile.name.toLowerCase().endsWith('.pdf')
+      ) {
         const arrayBuffer = await selectedFile.arrayBuffer();
         const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+
         detectedPages = pdf.numPages;
-        document.getElementById('pageInfo').textContent = `✅ ${detectedPages} page(s) detected`;
+        document.getElementById('pageInfo').textContent =
+          `✓ ${detectedPages} page(s) detected`;
       } else {
         detectedPages = 1;
-        document.getElementById('pageInfo').textContent = `✅ Image file (1 page)`;
+        document.getElementById('pageInfo').textContent =
+          '✓ Image file (1 page)';
       }
+
       calculateTotal();
-    });
 
-    document.getElementById('printForm').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      if (!selectedFile) return;
+    } catch (err) {
+      detectedPages = 0;
+      document.getElementById('pageInfo').textContent =
+        'Could not read this file. Please choose another file.';
 
-      const btn = document.getElementById('submitBtn');
-      btn.disabled = true;
-      btn.textContent = "Uploading...";
+      calculateTotal();
 
-      try {
-        const storagePath = `prints/${Date.now()}_${selectedFile.name}`;
-        const storageRef = ref(storage, storagePath);
-        await uploadBytes(storageRef, selectedFile);
-        const fileUrl = await getDownloadURL(storageRef);
+      Swal.fire(
+        'Unable to read file',
+        'Please upload a valid PDF, JPG or PNG file.',
+        'error'
+      );
+    }
+  });
 
-        const token = `#${Math.floor(100 + Math.random() * 900)}`;
-        const total = calculateTotal();
+  // Submit customer print order
+  document.getElementById('printForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
 
-        await addDoc(collection(db, "print_jobs"), {
+    if (!selectedFile || detectedPages < 1) {
+      Swal.fire(
+        'Select a document',
+        'Please choose a valid file before submitting.',
+        'warning'
+      );
+      return;
+    }
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Uploading...';
+
+    let uploadedPath = null;
+
+    try {
+      const safeFileName = selectedFile.name.replace(/[^\w.-]/g, '_');
+
+      // Path is inside the "prints" bucket, so do not prefix it with "prints/"
+      const storagePath = `${Date.now()}_${safeFileName}`;
+
+      // Upload file to private Supabase Storage bucket
+      const { error: uploadError } = await sb.storage
+        .from('prints')
+        .upload(storagePath, selectedFile, {
+          contentType: selectedFile.type,
+          upsert: false
+        });
+
+      if (uploadError) throw uploadError;
+
+      uploadedPath = storagePath;
+
+      const token = `#${Math.floor(100 + Math.random() * 900)}`;
+      const total = calculateTotal();
+
+      // Save order in Supabase database
+      const { error: insertError } = await sb
+        .from('print_jobs')
+        .insert({
           token: token,
-          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          customerName: document.getElementById('customerName').value,
-          fileName: selectedFile.name,
-          fileUrl: fileUrl,
-          storagePath: storagePath,
+          customer_name: document.getElementById('customerName').value,
+          file_name: selectedFile.name,
+          file_path: storagePath,
           pages: detectedPages,
           copies: parseInt(document.getElementById('copies').value) || 1,
-          colorMode: document.querySelector('input[name="colorMode"]:checked').value,
-          printSide: document.querySelector('input[name="printSide"]:checked').value,
-          pageRange: document.getElementById('pageRange').value || 'All',
+          color_mode: document.querySelector('input[name="colorMode"]:checked').value,
+          print_side: document.querySelector('input[name="printSide"]:checked').value,
+          page_range: document.getElementById('pageRange').value || 'All',
           notes: document.getElementById('notes').value || '',
           total: total,
-          status: 'PENDING',
-          createdAt: serverTimestamp()
+          status: 'PENDING'
         });
 
-        Swal.fire({
-          icon: 'success',
-          title: `Token ${token} Sent!`,
-          html: `Show this token at the counter.<br><b>Total Amount: ₹${total}</b>`,
-          confirmButtonColor: '#4f46e5'
-        });
+      if (insertError) throw insertError;
 
-        this.reset();
-        selectedFile = null;
-        detectedPages = 0;
-        document.getElementById('fileLabel').textContent = "Tap to choose file";
-        document.getElementById('pageInfo').textContent = "Auto-detects PDF page count";
+      // Show successful order message
+      Swal.fire({
+        icon: 'success',
+        title: `Token ${token} Sent!`,
+        html: `Show this token at the counter.<br><b>Total Amount: ₹${total}</b>`,
+        confirmButtonColor: '#4f46e5'
+      });
 
-        document.getElementById('totalDisplay').textContent = "₹0";
-} catch (err) {
-Swal.fire('Upload Failed', err.message, 'error');
-} finally {
-btn.disabled = false;
-btn.textContent = "Send to Printer →";
-}
-});
-  </script>
+      this.reset();
+
+      selectedFile = null;
+      detectedPages = 0;
+
+      document.getElementById('fileLabel').textContent = 'Tap to choose a file';
+      document.getElementById('pageInfo').textContent =
+        'PDF page count will be detected automatically';
+      document.getElementById('totalDisplay').textContent = '₹0';
+
+    } catch (err) {
+      console.error('Order submission failed:', err);
+
+      // Remove uploaded file if saving the order failed
+      if (uploadedPath) {
+        await sb.storage.from('prints').remove([uploadedPath]);
+      }
+
+      Swal.fire(
+        'Upload Failed',
+        err.message || 'Please try again.',
+        'error'
+      );
+
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = 'Send order to printer <span aria-hidden="true">→</span>';
+    }
+  });
+</script>
+
 </body>
 </html>
